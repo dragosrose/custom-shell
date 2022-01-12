@@ -177,3 +177,88 @@ int main(){
 
     return 0;
 }
+
+/*
+    Aici am incercat ceva cu operatori logici, dar nu ne-a iesit.
+    =============================================================
+
+    char** parse_args(char* s){
+    char** arg_list = calloc(100, sizeof(char*));
+    int i = 0;
+    char* arg;
+    arg = strtok(s, " ");
+    while (arg != NULL){
+        arg_list[i] = arg;
+        arg = strtok (NULL, " ");
+        i++;
+    }
+        
+    return arg_list;
+}
+
+
+
+int execute_function (char* arg){
+
+    char *output = malloc(4096);
+    if(strcmp(arg, "exit") == 0){
+            free (arg);
+            
+        }
+        else if (strcmp(arg, "istoric") == 0){
+            retrieve_history();
+        }
+        else if (strcmp(arg, "pwd") == 0){
+            pwd(output);
+            printf("%s\n", output);
+        }
+            
+        else if (strncmp(arg, "cd", 2) == 0){
+            change_directory(arg+3);
+        }
+        else if (strcmp(arg, "ls") == 0)
+            ls(output);
+        else if (strcmp(arg, "mkdir") == 0)
+            mdir();
+        else if (strcmp(arg, "clear") == 0)
+            clear();
+        else{
+            printf("Nu se recunoaste comanda.\n");
+            return 0;
+        }
+    
+    return 1;
+            
+}
+
+while (s = readline(com)){
+
+        
+        char** arg_list = parse_args(s);
+        int length = sizeof(arg_list)/sizeof(arg_list[0]);
+        
+        if(length > 1)
+            for(int i = 0; i < length; i += 2)
+            if(execute_function(arg_list[i])){
+
+                if(strcmp(arg_list[i+1],"&&"))
+                    continue;
+                else if (strcmp(arg_list[i+1],"||"))
+                    break;
+                
+            } else {
+                if(strcmp(arg_list[i+1],"&&"))
+                    break;
+                else if(strcmp(arg_list[i+1],"||"))
+                    continue;
+            }
+        else
+            execute_function(arg_list[0]);
+        free(arg_list);
+
+        ---
+        restul codului
+
+}
+
+*/
