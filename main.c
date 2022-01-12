@@ -9,6 +9,11 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#define BLU   "\x1B[34m"
+#define RED   "\x1B[31m"
+#define RESET "\x1B[0m"
+
+
 void retrieve_history(){
     HISTORY_STATE *com_hist = history_get_history_state();
     HIST_ENTRY **com_list = history_list();
@@ -38,6 +43,13 @@ void pwd(char* output){
     }
 }
 
+void help(){
+    printf("BOSS Shell v.0.0.1 Pre-Alpha\n");
+    printf("Provided by Trandafir Dragos, Lascu Matei, Guleama Dan\n");
+    printf("==================================\n");
+    printf("istoric : afiseaza istoricul comenzilor;\ncd : schimba directorul de lucru curent.\nmkdir : creeaza un director nou;\nrmdir : sterge un director;\nls : afiseaza continutul folderului curent;\necho : afiseaza in shell;\npwd : afiseaza directory-ul curent\n\n");
+}
+
 void mdir(){
 	
 	char* dir = malloc(2560);
@@ -53,12 +65,31 @@ void mdir(){
     free(dir);
 }
 
+void rdir(){
+	
+	char* dir = malloc(2560);
+	printf("Numele directorului de sters: ");
+	scanf("%s", dir);
+	if(!rmdir(dir))
+		printf("Directorul %s a fost sters. \n", dir);
+	else
+		perror("Director inexistent. \n");
+}
+
+void echo(char* cuv){
+    printf("%s\n",cuv);
+    
+}
+
 void change_directory(char* path) {
 
     char *home_dir = "/home";
 
+    
     if (strcmp(path, "") == 0 || (!(strcmp(path, "~") && strcmp(path, "~/"))))
         chdir(home_dir);
+    else if(strcmp(path, "..") == 0)
+        chdir(path);
     else if (chdir(path) < 0)
         perror("///No such file or directory: ");
     else
@@ -95,15 +126,16 @@ int main(){
         *host = getenv("HOSTNAME"),
         *s = NULL,
         *output = malloc(4096);
-    int nr = 1;
+    //int nr = 1;
     //printf("%s@%s> ", p, host);
-    sprintf(com, "%d %s@%s> ", nr, p, host);
+    pwd(output);
+    sprintf(com, RED "%s@%s" RESET ":" BLU " %s> " RESET, p, host, output);
     using_history();
     
     /*Inputul de comenzi*/
     while ((s = readline(com))){
         //printf("%s@%s> ", p, host);
-        if(strcmp(s, "") == 0){
+        if(strcmp(s, "exit") == 0){
             free (s);
             break;
         }
@@ -124,12 +156,19 @@ int main(){
             mdir();
         else if (strcmp(s, "clear") == 0)
             clear();
+        else if (strcmp(s, "rmdir") == 0)
+            rdir();
+        else if(strncmp(s, "echo", 4) == 0)
+            echo(s+5);
+        else if(strcmp(s, "help") == 0)
+            help();
         else
             printf("Nu se recunoaste comanda.\n");
         add_history(s);
         free(s);
-        nr++;
-        sprintf(com, "%d %s@%s> ", nr, p, host);
+        
+        pwd(output);
+        sprintf(com, RED "%s@%s" RESET ":" BLU " %s> " RESET, p, host, output);
     }
 
     
