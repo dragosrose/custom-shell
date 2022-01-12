@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <dirent.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
@@ -20,6 +21,19 @@ void retrieve_history(){
 
     //free (com_hist);
     //free (com_list);
+}
+
+void pwd(){
+
+    char buff[PATH_MAX];
+    if(getcwd(buff, sizeof(buff)) != NULL)
+        printf("%s\n", buff);
+    else {
+        perror("Eroare executand pwd.");
+        
+    }
+    
+
 }
 
 enum {max_size = 256};
@@ -46,6 +60,8 @@ int main(){
         else if (strcmp(s, "istoric") == 0){
             retrieve_history();
         }
+        else if (strcmp(s, "pwd") == 0)
+            pwd();
         add_history(s);
         free(s);
         nr++;
