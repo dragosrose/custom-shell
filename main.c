@@ -13,7 +13,7 @@ void retrieve_history(){
     printf("\n Istoricul de comenzi: \n");
     for(int i = 0; i < com_hist->length; i++){
         printf(" %8s  %s\n", com_list[i]->line, com_list[i]->timestamp);
-        free_history_entry(com_list[i]);
+        //free_history_entry(com_list[i]);
     }
 
     printf("\n");
@@ -32,13 +32,13 @@ int main(){
         *host = getenv("HOSTNAME"),
         *s = NULL;
     int nr = 1;
-    printf("%s@%s> ", p, host);
-
+    //printf("%s@%s> ", p, host);
+    sprintf(com, "%d %s@%s> ", nr, p, host);
     using_history();
     
     /*Inputul de comenzi*/
     while ((s = readline(com))){
-        printf("%s@%s> ", p, host);
+        //printf("%s@%s> ", p, host);
         if(strcmp(s, "") == 0){
             free (s);
             break;
@@ -49,6 +49,7 @@ int main(){
         add_history(s);
         free(s);
         nr++;
+        sprintf(com, "%d %s@%s> ", nr, p, host);
     }
 
     
